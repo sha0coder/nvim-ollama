@@ -3,7 +3,6 @@ local M = {}
 local config = require("ollama.config")
 local json = vim.json or require("dkjson")
 local timer = vim.loop.new_timer()
-local debounce_ms = 400
 
 
 local function log_to_file(msg)
@@ -80,36 +79,29 @@ local function setup_autocomplete()
         pattern = {"*.lua", "*.py", "*.rs", "*.js"},
         callback = function()
             timer:stop()
-            timer:start(debounce_ms, 0, vim.schedule_wrap(complete_current_line))
+            timer:start(config.get_delay() or 400, 0, vim.schedule_wrap(complete_current_line))
          end,
     })
---[[
-  vim.api.nvim_create_autocmd("TextChangedI", {
-    callback = function()
-      local ft = vim.bo.filetype
-          if ft == "lua" or ft == "python" or ft == "rust" or ft == "javascript" then
-          timer:stop()
-          timer:start(debounce_ms, 0, vim.schedule_wrap(function()
-                complete_current_line()
-          end))
-      end
-    end,
-    pattern = "*",
-  })
-]]
+end
+
+local function setup_manual_trigger()
+    local key = config.get_keybind() or "<C-x>"
+    vim.keymap.set("i", key, function()
+        complete_current_line()
+    end, { desc = "AI Complete line with Ollama", noremap = true, silent = true })
 end
 
 M.setup = function(opts)
-
     config.setup(opts)
-    vim.notify("Installing nvim-ollama ...", vim.log.levels.INFO)
-    log_to_file("iniciando setup")
-    log_to_file("setup ejecutado con modelo: " .. config.get_model() or "modelerr")
-    log_to_file("setup ejecutado con modelo: " .. config.get_system_prompt() or "prompterr")
 
-    vim.notify("options configured", vim.log.levels.INFO)
-    setup_autocomplete()
+    if opts.keybind then
+        setup_keybind(opts.keybind)
+    else
+        setup_autocomplete()
+    end
+
     vim.notify("nvim-ollama installed successfully", vim.log.levels.INFO)
 end
 
 return M
+
