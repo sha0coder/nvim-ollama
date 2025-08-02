@@ -13,6 +13,7 @@ Return only code. No comments, no explanations, no formatting, no extra words.
   trigger = "manual", -- "manual" or "auto"
   delay = 500,
   keybind = "<F2>",
+  context = 15
 }
 
 
@@ -48,6 +49,10 @@ end
 
 function M.get_keybind()
     return user_config.keybind
+end
+
+function M.get_context()
+    return user_config.context
 end
 
 

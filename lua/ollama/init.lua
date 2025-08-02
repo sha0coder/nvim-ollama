@@ -50,7 +50,8 @@ end
 
 local function complete_current_line()
   local row, col = unpack(vim.api.nvim_win_get_cursor(0))  -- current line (1-based)
-  local start_line = math.max(0, row - 1 - 15)  -- max 15 previous lines
+  local ctx = config.get_context()
+  local start_line = math.max(0, row - 1 - ctx)  -- max ctx previous lines
   local end_line = row - 1  -- zero-based index of current line
 
   local lines_before = vim.api.nvim_buf_get_lines(0, start_line, end_line, false)
