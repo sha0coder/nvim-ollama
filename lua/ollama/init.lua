@@ -68,7 +68,8 @@ local function complete_current_line()
     -- Insert response on current line
     local clean_line = response:match("[^\n\r]+") or response
     local cur_line = vim.api.nvim_get_current_line()
-    vim.api.nvim_set_current_line(cur_line .. clean_line)
+    --vim.api.nvim_set_current_line(cur_line .. clean_line)
+    vim.api.nvim_set_current_line(clean_line)
   end
 end
 
