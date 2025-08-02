@@ -50,32 +50,29 @@ local function send_to_ollama(prompt)
 end
 
 
-
 local function complete_current_line()
-  local line = vim.api.nvim_get_current_line()
-  local pos = vim.api.nvim_win_get_cursor(0)[2]
+  local row, col = unpack(vim.api.nvim_win_get_cursor(0))  -- current line (1-based)
+  local start_line = math.max(0, row - 1 - 15)  -- max 15 previous lines
+  local end_line = row - 1  -- zero-based index of current line
 
-  local context = {
-    line = line,
-    position = pos,
-    buffer = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-  }
+  local lines_before = vim.api.nvim_buf_get_lines(0, start_line, end_line, false)
+  local current_line = vim.api.nvim_buf_get_lines(0, end_line, end_line + 1, false)[1] or ""
 
   local prompt = string.format(
-    "Complete the code in the following line: %s\nContextt:\n%s",
-    line,
-    table.concat(context.buffer, "\n")
+    "Complete the code in the following line: %s\nContext:\n%s",
+    current_line,
+    table.concat(lines_before, "\n")
   )
 
- 
   local response = send_to_ollama(prompt)
   if response then
     -- Insert response on current line
-      local clean_line = response:match("[^\n\r]+") or response
-      local current_line = vim.api.nvim_get_current_line()
-      vim.api.nvim_set_current_line(current_line .. clean_line)
+    local clean_line = response:match("[^\n\r]+") or response
+    local cur_line = vim.api.nvim_get_current_line()
+    vim.api.nvim_set_current_line(cur_line .. clean_line)
   end
 end
+
 
 -- Config autocmd for real time self completing
 local function setup_autocomplete()
