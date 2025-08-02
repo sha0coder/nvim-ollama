@@ -30,4 +30,26 @@ function M.get_system_prompt()
   return user_config.system_prompt
 end
 
+function M.get_delay()
+  return user_config.delay
+end
+
+function M.get_port()
+    return user_config.port
+end
+
+function M.get_host()
+    return user_config.host
+end
+
+function M.get_trigger()
+    return user_config.trigger
+end
+
+function M.get_keybind()
+    return user_config.keybind
+end
+
+
+
 return M

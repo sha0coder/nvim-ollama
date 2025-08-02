@@ -16,7 +16,6 @@ end
 local function send_to_ollama(prompt)
   local model = config.get_model()
   local system_prompt = config.get_system_prompt()
-
   local full_prompt = string.format("%s\n\n%s", system_prompt, prompt)
 
   local body = json.encode({
@@ -94,8 +93,8 @@ end
 M.setup = function(opts)
     config.setup(opts)
 
-    if opts.keybind then
-        setup_keybind(opts.keybind)
+    if config.get_trigger() == "manual" then
+        setup_keybind(config.get_keybind())
     else
         setup_autocomplete()
     end
