@@ -4,8 +4,17 @@ local M = {}
 
 local config = require("config.lua")
 
+local function log_to_file(msg)
+  local f = io.open("/tmp/nvim-ollama.log", "a")
+  if f then
+    f:write(os.date() .. " - " .. msg .. "\n")
+    f:close()
+  end
+end
 
 local function send_to_ollama(prompt)
+  log_to_file("enviando prompt a ollama " .. prompt)
+
   local http = require("http")
   local json = require("json")
 
@@ -29,8 +38,10 @@ local function send_to_ollama(prompt)
 
   if res.status == 200 then
     local data = json.decode(res.body)
+    log_to_file("respuesta de ollama: " .. data.response)
     return data.response
   else
+    log_to_file("error enviando a ollama " .. res.status)
     vim.notify("Error in Ollama: " .. res.status, vim.log.levels.ERROR)
     return nil
   end
@@ -77,8 +88,13 @@ local function setup_autocomplete()
 end
 
 M.setup = function(opts)
-  config.setup(opts)
-  setup_autocomplete()
+    log_to_file("iniciando setup")
+    log_to_file("setup ejecutado con modelo: " .. config.get_model())
+    log_to_file("setup ejecutado con modelo: " .. config.get_system_prompt())
+
+    config.setup(opts)
+    setup_autocomplete()
+    vim.notify("nvim-ollama setup ejecutado", vim.log.levels.INFO)
 end
 
 return M
