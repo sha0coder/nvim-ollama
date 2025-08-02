@@ -5,7 +5,7 @@ Lazy plugin for NeoVim to autocomplete using an ollama offline model.
 
 ```lua
 {
-  "sha0coder/nvim-ollama.nvim",
+  "sha0coder/nvim-ollama",
   config = function()
     require("ollama_autocomplete").setup({
       model = "qwen3-coder:30b",
@@ -18,7 +18,7 @@ Lazy plugin for NeoVim to autocomplete using an ollama offline model.
 
 ```lua
 {
-  "sha0coder/nvim-ollama.nvim",
+  "sha0coder/nvim-ollama",
   config = function()
     require("nvim-ollama").setup({
       model = "qwen3-coder:30b", 

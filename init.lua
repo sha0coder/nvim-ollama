@@ -4,12 +4,14 @@ local M = {}
 
 local config = require("config.lua")
 
+
 local function send_to_ollama(prompt)
   local http = require("http")
   local json = require("json")
 
   local model = config.get_model()
   local system_prompt = config.get_system_prompt()
+
   local full_prompt = string.format("%s\n\n%s", system_prompt, prompt)
 
   local body = json.encode({
@@ -34,6 +36,7 @@ local function send_to_ollama(prompt)
   end
 end
 
+
 local function complete_current_line()
   local line = vim.api.nvim_get_current_line()
   local pos = vim.api.nvim_win_get_cursor(0)[2]
@@ -50,12 +53,13 @@ local function complete_current_line()
     table.concat(context.buffer, "\n")
   )
 
+ 
   local response = send_to_ollama(prompt)
   if response then
     -- Insert response on current line
-    local current_line = vim.api.nvim_get_current_line()
-    local new_line = string.sub(response, 1, 100) -- Limit length
-    vim.api.nvim_set_current_line(current_line .. new_line)
+      local clean_line = response:match("[^\n\r]+") or response
+      local current_line = vim.api.nvim_get_current_line()
+      vim.api.nvim_set_current_line(current_line .. clean_line)
   end
 end
 
@@ -63,10 +67,12 @@ end
 local function setup_autocomplete()
   vim.api.nvim_create_autocmd("TextChangedI", {
     callback = function()
-      -- Config frequency here
-      complete_current_line()
+      local ft = vim.bo.filetype
+      if ft == "lua" or ft == "python" or ft == "rust" or ft == "javascript" then
+        complete_current_line()
+      end
     end,
-    pattern = "*.lua,*.py,*.js,*.go,*.rs"
+    pattern = "*",
   })
 end
 
