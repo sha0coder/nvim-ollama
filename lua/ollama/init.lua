@@ -2,7 +2,7 @@
 
 local M = {}
 
-local config = require("config.lua")
+local config = require("ollama.config")
 
 local function log_to_file(msg)
   local f = io.open("/tmp/nvim-ollama.log", "a")
