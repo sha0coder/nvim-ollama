@@ -6,6 +6,11 @@
 By default it's using `qwen3-coder:30b`
 Use Lazy plugins to install it.
 
+## Usage
+
+by default is manual mode with the keybind F2.
+In manual mode press F2 and wait a moment.
+In auto mode (less convinient) is sending every delay time the query to ollama.
 
 
 ## Basic working configuration
@@ -28,7 +33,7 @@ Use Lazy plugins to install it.
   "sha0coder/nvim-ollama",
     opts = {
         model = "qwen3-coder:30b",
-        trigger = "manual",
+        trigger = "auto",
         keybind = "<F2>",
         host = "1.2.3.4" -- default localhost
         port = "11111" -- default 11434
