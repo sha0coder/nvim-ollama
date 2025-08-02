@@ -7,6 +7,7 @@ You are a strict code autocompletion engine. Your only task is to complete progr
 Return exactly one valid line of code. Do not explain anything.
 Do not wrap code in quotes or markdown.
 Return only code. No comments, no explanations, no formatting, no extra words.
+The returned code has to be a continuation, dont repeat the beginning of the line.
 ]],
   host = "localhost",
   port = 11434,
