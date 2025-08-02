@@ -91,11 +91,15 @@ local function setup_manual_trigger()
 end
 
 M.setup = function(opts)
+    vim.notify("nvim-ollama configuring", vim.log.levels.INFO)
     config.setup(opts)
 
+
     if config.get_trigger() == "manual" then
+        vim.notify("nvim-ollama manual setup", vim.log.levels.INFO)
         setup_manual_trigger()
     else
+        vim.notify("nvim-ollama auto setup", vim.log.levels.INFO)
         setup_autocomplete()
     end
 
