@@ -94,7 +94,7 @@ M.setup = function(opts)
     config.setup(opts)
 
     if config.get_trigger() == "manual" then
-        setup_keybind(config.get_keybind())
+        setup_manual_trigger()
     else
         setup_autocomplete()
     end
