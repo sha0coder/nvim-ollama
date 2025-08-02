@@ -2,7 +2,7 @@
 
 local M = {}
 
-local config = require("nvim-ollama.config")
+local config = require("config.lua")
 
 local function send_to_ollama(prompt)
   local http = require("http")
