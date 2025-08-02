@@ -88,13 +88,15 @@ local function setup_autocomplete()
 end
 
 M.setup = function(opts)
+    vim.notify("Installing nvim-ollama ...", vim.log.levels.INFO)
     log_to_file("iniciando setup")
     log_to_file("setup ejecutado con modelo: " .. config.get_model())
     log_to_file("setup ejecutado con modelo: " .. config.get_system_prompt())
 
     config.setup(opts)
+    vim.notify("options configured", vim.log.levels.INFO)
     setup_autocomplete()
-    vim.notify("nvim-ollama setup ejecutado", vim.log.levels.INFO)
+    vim.notify("nvim-ollama installed successfully", vim.log.levels.INFO)
 end
 
 return M
