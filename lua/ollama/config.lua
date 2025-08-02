@@ -12,7 +12,7 @@ Return only code. No comments, no explanations, no formatting, no extra words.
   port = 11434,
   trigger = "manual", -- "manual" or "auto"
   delay = 500,
-  keybind = "M-o",
+  keybind = "<F2>",
 }
 
 

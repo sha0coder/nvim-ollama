@@ -84,7 +84,7 @@ local function setup_autocomplete()
 end
 
 local function setup_manual_trigger()
-    local key = config.get_keybind() or "<C-x>"
+    local key = config.get_keybind() or "<F2>"
     vim.keymap.set("i", key, function()
         complete_current_line()
     end, { desc = "AI Complete line with Ollama", noremap = true, silent = true })
