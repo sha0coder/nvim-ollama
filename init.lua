@@ -4,14 +4,12 @@ local M = {}
 
 local config = require("nvim-ollama.config")
 
--- Conexión a Ollama API
 local function send_to_ollama(prompt)
   local http = require("http")
-  local json = require("json") -- Asegúrate de tener un módulo JSON
+  local json = require("json")
 
   local model = config.get_model()
   local system_prompt = config.get_system_prompt()
-
   local full_prompt = string.format("%s\n\n%s", system_prompt, prompt)
 
   local body = json.encode({
@@ -31,12 +29,11 @@ local function send_to_ollama(prompt)
     local data = json.decode(res.body)
     return data.response
   else
-    vim.notify("Error en Ollama: " .. res.status, vim.log.levels.ERROR)
+    vim.notify("Error in Ollama: " .. res.status, vim.log.levels.ERROR)
     return nil
   end
 end
 
--- Autocompletar línea actual
 local function complete_current_line()
   local line = vim.api.nvim_get_current_line()
   local pos = vim.api.nvim_win_get_cursor(0)[2]
@@ -48,25 +45,25 @@ local function complete_current_line()
   }
 
   local prompt = string.format(
-    "Completa el código en la siguiente línea: %s\nContexto:\n%s",
+    "Complete the code in the following line: %s\nContextt:\n%s",
     line,
     table.concat(context.buffer, "\n")
   )
 
   local response = send_to_ollama(prompt)
   if response then
-    -- Insertar respuesta en la línea actual
+    -- Insert response on current line
     local current_line = vim.api.nvim_get_current_line()
-    local new_line = string.sub(response, 1, 100) -- Limitar longitud
+    local new_line = string.sub(response, 1, 100) -- Limit length
     vim.api.nvim_set_current_line(current_line .. new_line)
   end
 end
 
--- Configurar autocmd para autocompletar en tiempo real
+-- Config autocmd for real time self completing
 local function setup_autocomplete()
   vim.api.nvim_create_autocmd("TextChangedI", {
     callback = function()
-      -- Puedes ajustar la frecuencia o condiciones aquí
+      -- Config frequency here
       complete_current_line()
     end,
     pattern = "*.lua,*.py,*.js,*.go,*.rs"
