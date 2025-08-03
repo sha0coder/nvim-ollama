@@ -12,8 +12,16 @@ by default is manual mode with the keybind F2.
 In manual mode press F2 and wait a moment.
 In auto mode (less convinient) is sending every delay time the query to ollama.
 
+## Setup ollama
 
-## Basic working configuration
+Note that qwen3 is 16Gb on disk, but is fast, good, offline and don't use much cpu/ram.
+
+```bash
+apt install ollama
+ollama pull qwen3-coder:30b
+```
+
+## Basic working Lazy configuration 
 
 ```lua
 {
@@ -59,3 +67,5 @@ Return only code. No comments, no explanations, no formatting, no extra words.
 ``` 
 
 Its important to use a good prompt for avoiding text or code in markdowns.
+
+
